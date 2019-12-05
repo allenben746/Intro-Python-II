@@ -2,6 +2,12 @@ from room import Room
 
 # Declare all the rooms
 
+item = {
+    'light': Item("light"),
+    'enos_key': Item("enos_key"),
+    'chamber_key': Item("chamber_key")
+}
+
 room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
@@ -20,6 +26,7 @@ to north. The smell of gold permeates the air."""),
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
+
 
 
 # Link rooms together
