@@ -30,21 +30,38 @@ earlier adventurers. The only exit is to the south."""),
 
 
 # Link rooms together
-
 room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
 room['foyer'].e_to = room['narrow']
 room['overlook'].s_to = room['foyer']
-room['narrow'].w_to = room['foyer']
+Room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
+
+# Add items to rooms
+# for r in room:
+#     print(room[r].name)
+room['overlook'].items.append(item['light'])
+room['narrow'].items.append(item['chamber_key'])
+
+
+# Set dark room
+room['narrow'].is_dark = True
+
+
+# Set locked room
+room['treasure'].is_locked = True
+
+
+# Make a new player object that is currently in the 'outside' room.
+name = input("What is your name:")
+player = Player(name, room['outside'])
+
 
 #
 # Main
 #
-
-# Make a new player object that is currently in the 'outside' room.
 
 # Write a loop that:
 #
@@ -56,3 +73,47 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+print("Room", room["foyer"].n_to.name)
+print("Current Room", player.curr_room)
+
+while True:
+    print("Location", player.curr_room.name)
+    print("Location Description", player.curr_room.desc)
+    cmd = input(" -> ")
+    split_cmd = cmd.split(" ")
+    if split_cmd[0] == "q":
+        break
+    elif split_cmd[0] == "n":
+        player.move_n()
+    elif split_cmd[0] == "s":
+        player.move_s()
+    elif split_cmd[0] == "w":
+        player.move_w()
+    elif split_cmd[0] == "e":
+        player.move_e()
+
+    elif split_cmd[0] == "view":
+        if len(split_cmd) == 2:
+            if split_cmd[1] == "items":
+                player.curr_room.view_items()
+            elif split_cmd[1] == "inventory":
+                player.view_inventory()
+            else:
+                print("Unauthorized command")
+        else:
+            print("Missing command")
+
+    elif split_cmd[0] == "take":
+        if len(split_cmd) == 2:
+            player.take_item(split_cmd[1], player.curr_room)
+        else:
+            print("Missing command")
+
+    elif split_cmd[0] == "drop":
+        if len(split_cmd) == 2:
+            player.drop_item(split_cmd[1], player.curr_room)
+        else:
+            print("Missing command")
+    else:
+        print("Unauthorized command")
